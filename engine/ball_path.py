@@ -22,6 +22,7 @@ class Ball:
         self.spray_angle = spray_angle  # Positive towards right side
         self.backspin = backspin    # RPM, +ve = backspin
         self.sidespin = sidespin    # RPM, +ve = breaking towards left side
+        # TODO: wind not implemented
         self.wind_speed = wind_speed    # feet per second
         self.wind_direction = wind_direction
         self.ball_circumference = ball_circumference    # inches
