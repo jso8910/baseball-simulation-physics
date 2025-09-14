@@ -24,7 +24,7 @@ class Ball:
         self.sidespin = sidespin    # RPM, +ve = breaking towards left side
         # TODO: wind not implemented
         self.wind_speed = wind_speed    # feet per second
-        self.wind_direction = wind_direction
+        self.wind_direction = wind_direction    # 0 degrees towards CF, 180 degrees towards home plate, 90 degrees towards right field
         self.ball_circumference = ball_circumference    # inches
         self.ball_mass = ball_mass  # ounces
 
@@ -49,10 +49,14 @@ class Ball:
         z = 6.0
 
         # Converted to feet per second
-        v = self.velocity * 5280 / (60*60)
-        vx = v * math.cos(self.launch_angle) * math.sin(self.spray_angle)
-        vy = v * math.cos(self.launch_angle) * math.cos(self.spray_angle)
-        vz = v * math.sin(self.launch_angle)
+        v_raw = self.velocity * 5280 / (60*60)
+
+        # Wind adjusted velocity
+        vx = v_raw * math.cos(self.launch_angle) * math.sin(self.spray_angle) + self.wind_speed * math.sin(self.wind_direction)
+        vy = v_raw * math.cos(self.launch_angle) * math.cos(self.spray_angle) + self.wind_speed * math.cos(self.wind_direction)
+        vz = v_raw * math.sin(self.launch_angle)
+
+        v = math.sqrt(vx**2 + vy**2 + vz**2)
 
         total_rpm = math.sqrt(self.backspin**2 + self.sidespin**2)
         # Omega (rad / s)
